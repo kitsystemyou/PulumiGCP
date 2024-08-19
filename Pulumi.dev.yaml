@@ -1,0 +1,2 @@
+config:
+        gcp:project: gce-kubernetes-432911
