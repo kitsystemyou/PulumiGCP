@@ -9,7 +9,7 @@ func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		// Compute Engineインスタンスの作成
 		instance, err := compute.NewInstance(ctx, "my-instance", &compute.InstanceArgs{
-			MachineType: pulumi.String("f1-micro"),
+			MachineType: pulumi.String("n1-standard-2"),
 			Zone:        pulumi.String("us-central1-a"),
 			BootDisk: &compute.InstanceBootDiskArgs{
 				InitializeParams: &compute.InstanceBootDiskInitializeParamsArgs{
@@ -24,6 +24,8 @@ func main() {
 					},
 				},
 			},
+			// インスタンスの停止を許可したいときはtrueに設定
+			// AllowStoppingForUpdate: pulumi.Bool(true),
 		})
 		if err != nil {
 			return err
