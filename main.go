@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -30,7 +30,13 @@ func main() {
 		}
 
 		// インスタンスの外部IPアドレスをエクスポート
-		ctx.Export("instanceIP", instance.NetworkInterfaces.Index(pulumi.Int(0)).AccessConfigs().Index(pulumi.Int(0)).NatIp())
+		ctx.Export(
+			"instanceIP",
+			instance.NetworkInterfaces.Index(pulumi.Int(0)).
+				AccessConfigs().
+				Index(pulumi.Int(0)).
+				NatIp(),
+		)
 
 		return nil
 	})
