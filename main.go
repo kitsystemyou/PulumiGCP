@@ -5,6 +5,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+const kubeport = "32771"
+
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		// Compute Engineインスタンスの作成
@@ -26,6 +28,31 @@ func main() {
 			},
 			// インスタンスの停止を許可したいときはtrueに設定
 			// AllowStoppingForUpdate: pulumi.Bool(true),
+
+			// インスタンスのタグを設定: http, https のトラフィックを許可
+			Tags: pulumi.StringArray{
+				// pulumi.String("http-server"),
+				pulumi.String("https-server"),
+			},
+		})
+		if err != nil {
+			return err
+		}
+
+
+		// HTTP用ファイアウォールルールの作成
+		_, err = compute.NewFirewall(ctx, "allow-https", &compute.FirewallArgs{
+			Network: pulumi.String("default"),
+			Allows: compute.FirewallAllowArray{
+				&compute.FirewallAllowArgs{
+					Protocol: pulumi.String("tcp"),
+					Ports:    pulumi.StringArray{pulumi.String(kubeport), pulumi.String("80"), pulumi.String("443")},
+				},
+			},
+			TargetTags: pulumi.StringArray{pulumi.String("https-server")},
+			
+			// 実際には適切なソース範囲を指定する
+			SourceRanges: pulumi.StringArray{pulumi.String("0.0.0.0/0")},
 		})
 		if err != nil {
 			return err
