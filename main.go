@@ -46,7 +46,7 @@ func main() {
 			Allows: compute.FirewallAllowArray{
 				&compute.FirewallAllowArgs{
 					Protocol: pulumi.String("tcp"),
-					Ports:    pulumi.StringArray{pulumi.String(kubeport)},
+					Ports:    pulumi.StringArray{pulumi.String(kubeport), pulumi.String("80"), pulumi.String("443")},
 				},
 			},
 			TargetTags: pulumi.StringArray{pulumi.String("https-server")},
