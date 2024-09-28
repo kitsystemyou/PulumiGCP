@@ -32,7 +32,7 @@ func main() {
 			// インスタンスのタグを設定: http, https のトラフィックを許可
 			Tags: pulumi.StringArray{
 				pulumi.String("http-server"),
-				pulumi.String("https-server"),
+				// pulumi.String("https-server"),
 			},
 		})
 		if err != nil {
@@ -50,6 +50,9 @@ func main() {
 				},
 			},
 			TargetTags: pulumi.StringArray{pulumi.String("http-server")},
+			
+			// 実際には適切なソース範囲を指定する
+			SourceRanges: pulumi.StringArray{pulumi.String("0.0.0.0/0")},
 		})
 		if err != nil {
 			return err
