@@ -31,8 +31,8 @@ func main() {
 
 			// インスタンスのタグを設定: http, https のトラフィックを許可
 			Tags: pulumi.StringArray{
-				pulumi.String("http-server"),
-				// pulumi.String("https-server"),
+				// pulumi.String("http-server"),
+				pulumi.String("https-server"),
 			},
 		})
 		if err != nil {
@@ -41,7 +41,7 @@ func main() {
 
 
 		// HTTP用ファイアウォールルールの作成
-		_, err = compute.NewFirewall(ctx, "allow-http", &compute.FirewallArgs{
+		_, err = compute.NewFirewall(ctx, "allow-https", &compute.FirewallArgs{
 			Network: pulumi.String("default"),
 			Allows: compute.FirewallAllowArray{
 				&compute.FirewallAllowArgs{
@@ -49,7 +49,7 @@ func main() {
 					Ports:    pulumi.StringArray{pulumi.String(kubeport)},
 				},
 			},
-			TargetTags: pulumi.StringArray{pulumi.String("http-server")},
+			TargetTags: pulumi.StringArray{pulumi.String("https-server")},
 			
 			// 実際には適切なソース範囲を指定する
 			SourceRanges: pulumi.StringArray{pulumi.String("0.0.0.0/0")},
