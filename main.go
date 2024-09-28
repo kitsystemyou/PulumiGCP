@@ -5,7 +5,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-const kubeport = "8443"
+const kubeport = "32771"
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
